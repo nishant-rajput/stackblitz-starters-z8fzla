@@ -210,11 +210,28 @@ let hotels = [
 
 app.use(cors());
 
-function sortHotels(key, order) {
-  return (a, b) =>
-    order === 'low-to-high' || order === 'high-to-low'
-      ? a[key] - b[key]
-      : b[key] - a[key];
+function sortByPricingLowToHigh(hotel1, hotel2) {
+  return hotel1.pricing - hotel2.pricing;
+}
+
+function sortByPricingHighToLow(hotel1, hotel2) {
+  return hotel2.pricing - hotel1.pricing;
+}
+
+function sortByRatingLowToHigh(hotel1, hotel2) {
+  return hotel1.rating - hotel2.rating;
+}
+
+function sortByRatingHighToLow(hotel1, hotel2) {
+  return hotel2.rating - hotel1.rating;
+}
+
+function sortByReviewsLeastToMost(hotel1, hotel2) {
+  return hotel1.reviews - hotel2.reviews;
+}
+
+function sortByReviewsMostToLeast(hotel1, hotel2) {
+  return hotel2.reviews - hotel1.reviews;
 }
 
 function filterByAmenity(hotel, amenity) {
@@ -235,20 +252,45 @@ app.get('/hotels', (req, res) => {
 
 app.get('/hotels/sort/pricing', (req, res) => {
   const { pricing } = req.query;
-  const sortedHotels = hotels.slice().sort(sortHotels('pricing', pricing));
+  let sortedHotels;
+
+  if (pricing === 'low-to-high') {
+    sortedHotels = hotels.slice().sort(sortByPricingLowToHigh);
+  } else if (pricing === 'high-to-low') {
+    sortedHotels = hotels.slice().sort(sortByPricingHighToLow);
+  }
+
   res.json({ hotels: sortedHotels });
 });
 
 app.get('/hotels/sort/rating', (req, res) => {
   const { rating } = req.query;
-  const sortedHotels = hotels.slice().sort(sortHotels('rating', rating));
+  let sortedHotels;
+
+  if (rating === 'low-to-high') {
+    sortedHotels = hotels.slice().sort(sortByRatingLowToHigh);
+  } else if (rating === 'high-to-low') {
+    sortedHotels = hotels.slice().sort(sortByRatingHighToLow);
+  }
+
   res.json({ hotels: sortedHotels });
 });
 
 app.get('/hotels/sort/reviews', (req, res) => {
   const { reviews } = req.query;
-  const sortedHotels = hotels.slice().sort(sortHotels('reviews', reviews));
+  let sortedHotels;
+
+  if (reviews === 'least-to-most') {
+    sortedHotels = hotels.slice().sort(sortByReviewsLeastToMost);
+  } else if (reviews === 'most-to-least') {
+    sortedHotels = hotels.slice().sort(sortByReviewsMostToLeast);
+  }
+
   res.json({ hotels: sortedHotels });
+});
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
 });
 
 app.get('/hotels/filter/amenity', (req, res) => {
