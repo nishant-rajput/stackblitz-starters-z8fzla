@@ -211,11 +211,11 @@ let hotels = [
 app.use(cors());
 
 function sortByPricingLowToHigh(hotel1, hotel2) {
-  return hotel1.pricing - hotel2.pricing;
+  return hotel1.price - hotel2.price;
 }
 
 function sortByPricingHighToLow(hotel1, hotel2) {
-  return hotel2.pricing - hotel1.pricing;
+  return hotel2.price - hotel1.price;
 }
 
 function sortByRatingLowToHigh(hotel1, hotel2) {
