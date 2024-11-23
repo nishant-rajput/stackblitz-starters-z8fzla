@@ -212,7 +212,7 @@ app.use(cors());
 
 function sortHotels(key, order) {
   return (a, b) =>
-    order === 'low-to-high' || order === 'least-to-most'
+    order === 'low-to-high' || order === 'high-to-low'
       ? a[key] - b[key]
       : b[key] - a[key];
 }
